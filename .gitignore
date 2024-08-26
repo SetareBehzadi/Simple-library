@@ -1,0 +1,6 @@
+.idea/
+./idea/*
+
+*.pgc
+*.sqlite3
+local_*.py
