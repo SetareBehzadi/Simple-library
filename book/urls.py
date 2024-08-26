@@ -4,5 +4,5 @@ from book.views import BookListView
 
 app_name = 'book'
 urlpatterns = [
-    path('', BookListView.as_view, name='books_list')
+    path('', BookListView.as_view(), name='books_list')
 ]

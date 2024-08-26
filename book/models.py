@@ -1,4 +1,23 @@
+from crypt import methods
+
 from django.db import models
+from django.db.models.enums import StrEnum
+
+
+class Status(StrEnum):
+    ACTIVE = 1
+    COMING_SOON = 2
+    FINISH = 3
+    INACTIVE = 4
+    @classmethod
+    def choices(cls):
+
+        return [
+            (cls.ACTIVE, "active"),
+            (cls.COMING_SOON, "coming soon"),
+            (cls.FINISH, "finish"),
+            (cls.INACTIVE, "in active"),
+        ]
 
 class Author(models.Model):
     name = models.CharField(max_length=255)
@@ -25,25 +44,13 @@ class Category(models.Model):
 
 
 class Book(models.Model):
-    ACTIVE = 1
-    COMING_SOON = 2
-    FINISH = 3
-    INACTIVE = 4
-
-    STATUS_CHOICES = [
-        (ACTIVE, "active"),
-        (COMING_SOON, "coming soon"),
-        (FINISH, "finish"),
-        (INACTIVE, "in active"),
-    ]
-
     title = models.CharField(max_length=255)
     author = models.ForeignKey(Author, on_delete=models.CASCADE, related_name='books')
     category = models.ForeignKey(Category, on_delete=models.SET_NULL, null=True, related_name='books')
     published_date = models.DateField()
     price = models.PositiveBigIntegerField()
     image = models.ImageField()
-    status = models.PositiveSmallIntegerField(default=1, choices=STATUS_CHOICES)
+    status = models.PositiveSmallIntegerField(default=1, choices=Status.choices())
     description = models.TextField(blank=True, null=True)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
