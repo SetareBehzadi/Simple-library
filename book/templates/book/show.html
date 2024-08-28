@@ -1,0 +1,38 @@
+{% extends 'base.html' %}
+
+{% block title %} {{ book.title}} {% endblock %}
+{% block content %}
+
+    <h2>
+         {{ book.title}}
+    </h2>
+<p>
+    <h6>
+    {{book.get_status_display}}
+</h6>
+</p>
+<div class="col-md-6">
+    <p>
+        {{ book.description }}
+    </p>
+    <p>
+        <h6><b>Category: </b>{{book.category}}</h6>
+    </p>
+    <footer>
+         <p>
+            <b>Price: </b>{{book.price}}
+        </p>
+        <h6><b>Info: </b></h6>{{ book.author.name}} | {{book.published_date|date:"Y-M-D" }}
+
+    </footer>
+</div>
+
+<p>
+    <form action="{% url 'book:book_delete' book.id%}" method="post">
+    {% csrf_token %}
+    <input type="hidden" name="pk" value="{{book.id}}">
+    <input type="submit" class="btn btn-danger" value="DELETE">
+    </form>
+
+</p>
+{% endblock %}
