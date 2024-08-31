@@ -2,19 +2,42 @@ from django.shortcuts import redirect,render,HttpResponse,get_object_or_404
 from django.views import View
 from django.contrib import messages
 
-from book.forms import BookCreateForm
+from book.forms import BookCreateForm, BookFilterForm
 from book.models import Book, Author, Category
 
 
 class BookListView(View):
     def get(self, request):
         books = Book.objects.exclude(status=4)
+        filter_form = BookFilterForm(request.GET)
         query = request.GET.get('q')
-        # print('**'*4)
-        # print(query)
         if query:
             books = books.filter(author__name__contains=query) | books.filter(title__contains=query)
-        return render(request, 'book/home.html', {'books': books})
+
+        if filter_form.is_valid():
+            cd = filter_form.cleaned_data
+            min_price = cd['min_price']
+            max_price = cd['max_price']
+            start_date = cd['start_date']
+            end_date = cd['end_date']
+
+            if min_price is not None:
+                books = books.filter(price__gte=min_price)
+            if max_price is not None:
+                books = books.filter(price__lte=max_price)
+
+            if start_date:
+                books = books.filter(published_date__gte=start_date)
+            if end_date:
+                books = books.filter(published_date__lte=end_date)
+        return render(request, 'book/home.html', {'books': books, 'form':filter_form})
+
+    def post(self, request):
+        books_id = request.POST.getlist('book_ids')
+        if books_id:
+            Book.objects.filter(id__in=books_id).delete()
+        return redirect('book:books_list')
+
 
 
 def book_show(request, pk:int):

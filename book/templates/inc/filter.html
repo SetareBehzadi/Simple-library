@@ -1,0 +1,23 @@
+<form method="get" action="{% url 'book:books_list' %}" class="d-flex flex-column">
+    <div class="row">
+        <div class="col-lg-6">
+            {{ form.min_price }}
+        </div>
+        <div class="col-lg-6">
+            {{ form.max_price }}
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-lg-6">
+            {{ form.start_date }}
+        </div>
+        <div class="col-lg-6">
+            {{ form.end_date }}
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-lg-6">
+            <button class="btn btn-success mb-2" type="submit">Filter</button>
+        </div>
+    </div>
+</form>

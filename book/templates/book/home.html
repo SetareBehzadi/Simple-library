@@ -9,25 +9,32 @@ Home
 {%endblock%}
 
 {% block content %}
-<h3>
-    {% if request.user.is_authenticated %}
-        Hello User
-    {% else %}
-        Hello world
-{% endif %}
-    </h3>
+  {% include 'inc/filter.html' %}
 
+ <form method="post" action="{% url 'book:books_list' %}" id="delete-form">
+    {% csrf_token %}
 <div class="row">
 {% for book in books %}
        <div class="card col-lg-12" style="width: 18rem; margin:5px;">
+
           <div class="card-body">
-            <h5 class="card-title">{{book.title}}</h5>
+              <div class="col-md-12 row" style="direction:rtl; ">
+              <div class="col-md-6" style="float: left;direction: rtl;">
+                  <input type="checkbox" name="book_ids" value="{{ book.id }}" class="form-check-input" style="border:1px solid black;">
+              </div>
+              <div class="col-md-6" style="text-align: left;"><h5 class="card-title">{{book.title}}</h5></div>
+                  </div>
             <p class="card-text">{{book.description}}</p>
             <p class="card-text">{{book.price}}</p>
             <p class="card-text">{{book.get_status_display}} | {{book.published_date}}</p>
             <a href="{% url 'book:book_show' book.id %}" class="btn btn-primary">Go details</a>
+              <a href="{% url 'book:book_delete' book.id %}" class="btn btn-danger">DELETE</a>
           </div>
     </div>
 {% endfor %}
     </div>
+         <button type="submit" class="btn btn-danger mt-3" onclick="return confirm('Are you sure you want to delete the selected books?');">
+      Delete Selected
+    </button>
+  </form>
 {%endblock%}
