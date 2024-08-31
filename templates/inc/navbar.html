@@ -10,6 +10,10 @@
           <a class="nav-link" href="{%url 'book:book_create' %}">Create</a>
         </li>
       </ul>
+       <form class="d-flex" action="{% url 'book:books_list' %}" method="get">
+      <input class="form-control me-2" type="search" name="q" placeholder="Search" aria-label="Search">
+      <button class="btn btn-outline-success" style="background-color: #198754;color: #fff;" type="submit">Search</button>
+    </form>
     </div>
   </div>
 </nav>

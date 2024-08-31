@@ -28,11 +28,7 @@
 </div>
 
 <p>
-    <form action="{% url 'book:book_delete' book.id%}" method="post">
-    {% csrf_token %}
-    <input type="hidden" name="pk" value="{{book.id}}">
-    <input type="submit" class="btn btn-danger" value="DELETE">
-    </form>
-
+    <a href="{% url 'book:book_delete' book.id %}" class="btn btn-danger">DELETE</a>
+    <a href="{% url 'book:book_edit' book.id %}" class="btn btn-success">UPDATE</a>
 </p>
 {% endblock %}
